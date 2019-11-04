@@ -1,6 +1,7 @@
 # video-poker-tutor
 
-<h1>Video Poker Tutor</h1>
+<h1>Project Idea</h1>
+<h2>Video Poker Tutor</h1>
 	<p>A project that I have done for some beginning programming classes in the past has been a simple video poker machine. Its design is rather simple on paper and easy to explain to other people, though a bit difficult to code properly. The basic concept is that each round, a user can bet a set number of tokens, and is then dealt five cards. The user can choose any, all, or none of these five cards to keep, and the rest are discarded and replaced with new cards. After this, the hand is evaluated to see if it contains any of the standard poker hands, including flushes, straights, 3 or 4 in a row, and the like. If it does, the user wins that amount, though as there is no compensation for “high card” or one pair (unless it is a jack or higher), the player will likely lose.</p>
 	<p>As a gambling game, video poker will have a select market, mostly older clients, though unlike some games like slots or poker, there is a small element of skill, as the player has some control over which cards they keep or discard. However, as no actual money is being used to gamble here, it could also be used to teach newer players how to play at no risk, or simply teach people poker hands, as most of them are similar between the two.</p>
 	<p>Unlike a standard video poker machine, this machine will have a few additional tools that can be used to help teach newer players video poker should they choose to enable them. One tool can simply be used to automatically suggest which cards to hold and why. A second can calculate the probability of any hand with the given cards.<p>
