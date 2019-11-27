@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}
+  Analyze Hand | Jacks or Better
+{% endblock %}
+
+{% block content %}
+  <div class="row mt-4 mb-2">
+    <div class="col-md-12">
+      <h1>Analyze Hand</h1>
+    </div>
+  </div>
+
+  <div class="row mt-2 text-center">
+    <div class="col-md-8">
+    {% for card in cards %}
+      <img src="/static/cards/{{ card }}.png" height="200px" class="mr-2"
+        {% if card in hold_cards %} style="border: 3px solid maroon" {% endif %}>
+    {% endfor %}
+  </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md-8">
+      <div
+        {% if winning_hand %}
+          class="alert alert-success"
+        {% else %}
+          class="alert alert-danger"
+        {% endif %}
+      >
+        <h4>{{ score }}</h4>
+        Hold the highlighted cards.
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-md-3">
+      <h3><a href="/" class="btn btn-primary">Analyze Another Hand</a></h3>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h4>Possible Plays Detail</h4>
+      <table class="table table-sm table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th>Hold Cards</th>
+            <th>Expected Value</th>
+          <tr>
+        <thead>
+          <tbody>
+          {% for play in plays %}
+          <tr>
+            <td>{{ play }}</td>
+            <td>{{ ev[loop.index0] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

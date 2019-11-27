@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row mt-4">
+          <div class="alert alert-danger">
+            This web page is currently under development. It may not provide complete
+            or correct output until develoment is complete. <strong>Use at your own risk!</strong>
+          </div>
+      </div>
+      {% block content %}
+      {% endblock %}
+      <footer>
+        <hr>
+        <div class="row">
+          <a href="https://github.com/thehomebrewnerd/video-poker-hand-analyzer" target="_blank">View source on GitHub</a>
+        </div>
+        <br>
+      </footer>
+    </div>
+  </body>
+</html>

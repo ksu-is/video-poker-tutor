@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Pick a Hand
+{% endblock %}
+
+{% block content %}
+  <div class="row mt-4 mb-2">
+    <h1>Video Poker Hand Analyzer - Jacks or Better</h1>
+  </div>
+
+  <div class="row">
+    <img src="static/cards/blank_card.png" height=200px, id="1" class="mr-2 mt-2">
+    <img src="static/cards/blank_card.png" height=200px, id="2" class="mr-2 mt-2">
+    <img src="static/cards/blank_card.png" height=200px, id="3" class="mr-2 mt-2">
+    <img src="static/cards/blank_card.png" height=200px, id="4" class="mr-2 mt-2">
+    <img src="static/cards/blank_card.png" height=200px, id="5" class="mr-2 mt-2">
+  </div>
+  <div class="row mt-3">
+    <button id="7" style="display: inline" class="btn btn-primary mr-3" onClick="reset_cards()">Reset Selection</button>
+    <a href="#" id="6" style="display: none" class="btn btn-primary">Analyze Hand</a>
+  </div>
+
+  <div class="row mt-3">
+    <h3 id="select_string">Select <span id="cards_to_pick">5</span> cards from the deck below to make a hand</h3>
+  </div>
+
+  {% for suit in suits %}
+  <div class="row mt-2">
+    {% for rank in ranks %}
+      <img src="static/cards/{{ rank }}{{ suit }}.png" height="100px" onClick="card_click(this.id)" id="{{ rank }}{{ suit }}" class="mr-2 mt-2">
+    {% endfor %}
+  </div>
+  {% endfor %}
+
+
+<script type="text/javascript">
+var click_count = 0;
+var link_string = "/analyze/";
+var clicked_cards = [];
+var cards_left = 5;
+
+function card_click(clicked_id)
+{
+  if ((!clicked_cards.includes(clicked_id)) & (click_count < 5)) {
+    clicked_cards.push(clicked_id);
+    click_count++;
+    cards_left = 5 - click_count;
+    document.getElementById("cards_to_pick").innerHTML=cards_left.toString();
+    src_string="static/cards/" + clicked_id + ".png";
+    link_string = link_string + clicked_id;
+    if (click_count < 5) {
+      link_string = link_string + "-";
+    }
+
+    document.getElementById(click_count).src=src_string;
+    document.getElementById(clicked_id).src="static/cards/blank_card.png";
+
+    if (click_count < 5) {
+      document.getElementById("6").style.display = "none";
+    } else {
+      document.getElementById("6").style.display = "inline";
+    }
+    document.getElementById("6").href = link_string;
+
+  }
+}
+
+function reset_cards()
+{
+  document.getElementById("1").src="static/cards/blank_card.png";
+  document.getElementById("2").src="static/cards/blank_card.png";
+  document.getElementById("3").src="static/cards/blank_card.png";
+  document.getElementById("4").src="static/cards/blank_card.png";
+  document.getElementById("5").src="static/cards/blank_card.png";
+
+  for (var i = 0; i < clicked_cards.length; i++) {
+    src_string="static/cards/" + clicked_cards[i] + ".png";
+    document.getElementById(clicked_cards[i]).src=src_string;
+  }
+
+  click_count = 0;
+  link_string = "/analyze/";
+  clicked_cards = [];
+  cards_left = 5;
+  document.getElementById("cards_to_pick").innerHTML=cards_left.toString();
+  document.getElementById("6").style.display = "none";
+  document.getElementById("6").href = link_string;
+}
+</script>
+
+{% endblock %}
