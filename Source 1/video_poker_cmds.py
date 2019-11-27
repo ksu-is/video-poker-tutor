@@ -92,9 +92,27 @@ else:
         command = input('> ')
 
 mode = 0
-# 0: round start
-# 1: cards dealt for round 1
-# 2: cards dealt for round 2, 
+win_hand = 0
+# 0: round start, valid bet             # place_bet()
+# 1: cards dealt for round 1            # round_start()
+# 2: cards dealt for round 2            # judge()
+# 3: round end, everything finalized    # payout()
+
+#default variables
+total_credits = 20.00
+bet = 5
+credit_value = 0.25
+
+def place_bet():
+    global total_credits
+    if (bet <= total_credits):
+        total_credits -= bet
+        bet = bet
+        if mode == 3:
+            mode = 0
+    #else:
+        # throw error?
+
 def round_start ():
     deck = Deck()
     hand = Hand()
@@ -104,14 +122,17 @@ def round_start ():
     mode = 1
     
 def hold(num):
+    global hold_cards
     num = int(num)
     if (num>= 0 & num<=4):
         hold_cards[num] = not hold_cards[num]
 def judge():
+    global hand
+    global hold_cards
     for index in range(5):
         if not hold_cards[index]:
             hand.discard(index)
     #update hand GUI
     score = score_hand(hand)
     #to do: convert change score_hand into an array output in the format [score_name,score]
-    
+    win_hand = pay_table.get(score)

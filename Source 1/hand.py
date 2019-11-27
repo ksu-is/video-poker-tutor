@@ -32,6 +32,7 @@ class Hand():
             return False
 
     def discard(self, pos):
+        #print("Debug:\t" + self + "\n")
         self.cards.pop(pos)
 
     def draw_card(self, deck):
@@ -53,3 +54,7 @@ class Hand():
     def get_min_rank(self):
         rank_list = [card.rank for card in self.cards]
         return min(rank_list)
+    
+    def length(self):
+        print("Length function called:\t", self.cards)
+        return len(self.cards)
