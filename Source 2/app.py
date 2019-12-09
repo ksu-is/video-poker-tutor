@@ -8,6 +8,8 @@ from analyze import analyze_hand
 from deck import Deck
 from hand import Hand
 
+import copy
+
 app = Flask(__name__)
 
 @app.route('/pick_hand')
@@ -54,10 +56,10 @@ def analyze(hand_string):
         winning_hand = True
     else:
         winning_hand = False
-
     context = {'cards':cards, 'score':score, 'hold_cards':hold_cards, 'winning_hand':winning_hand, \
             'plays':plays_context, 'ev':ev_context}
     return render_template('analyze.html', **context)
+#home
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -74,6 +76,8 @@ card_list = [Card(item) for item in cards]
 ev_list = 0
 plays_context = {}
 ev_context = {}
+#cards_held
+hold_cards = []
 
 def start_round():
         global game_deck
@@ -100,12 +104,55 @@ def start_round():
 
 @app.route('/game')
 def game():
-    
+    global game_hand
     start_round()
     print("Export Cards\t", cards)
-    context = {'cards':cards, 'plays':plays_context, 'ev':ev_context}
+    url_hand = ""
+    for i in game_hand.cards:
+        url_hand += str(i) + "-"
+    url_hand = url_hand[0:-1]
+    context = {'cards':cards, 'plays':plays_context, 'ev':ev_context, 'url_hand': url_hand}
     return render_template('game.html', **context)
 #end edit
+
+@app.route('/game_result/<hold_string>')
+def game_result(hold_string):
+    global hold_cards
+    global game_hand
+    global game_deck
+    print("Global card list:\t", game_hand)
+    local_list = Hand()
+    local_deck = copy.deepcopy(game_deck)
+    hold_cards = str(hold_string).split('-')
+    hold_cards_display = []
+    for i in range(0, 5):
+        if hold_cards[i] == 't':
+            local_list.add_card(game_hand.cards[i])
+            hold_cards_display.append(game_hand.cards[i])
+        else:           #== 'f'
+            card_to_add = local_deck.draw_card()
+            local_list.add_card(card_to_add)
+        hold_cards[i]
+    judge_hand = []
+    for i in local_list.cards:
+        judge_hand.append(i)
+    score = score_hand(judge_hand)
+    if score != "Not a Winning Hand":
+        winning_hand = True
+    else:
+        winning_hand = False
+    display_hand = []
+    
+    for i in local_list.cards:
+        display_hand.append(str(i))
+    url_hand = ""
+    for i in game_hand.cards:
+        url_hand += str(i) + "-"
+    url_hand = url_hand[0:-1]
+    print("Judge hand:\t", judge_hand) 
+    context = {'cards':judge_hand, 'score':score, 'hold_cards':hold_cards_display, 'winning_hand':winning_hand, 'display_hand':display_hand, 'url_hand':url_hand}
+    print(context)
+    return render_template('game_result.html', **context)
 
 def get_play_string(input_list):
     output_string = ''

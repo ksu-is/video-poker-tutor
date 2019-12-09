@@ -13,8 +13,8 @@
   <div class="row mt-2 text-center">
     <div class="col-md-8" id="card_display">
     {% for card in cards %}
-      <img src="/static/cards/{{ card }}.png" height="200px" class="mr-2"
-        {% if card in hold_cards %} style="border: 3px solid maroon" {% endif %}>
+      <img src="/static/cards/{{ card }}.png" height="200px" class="mr-2"  id="{{card}}" onclick="onCardClick('{{card}}');"
+        {% if card in hold_cards %} style="border: 3px solid maroon" {% else %} style="border: 0px solid yellow" {% endif %}>
     {% endfor %}
   </div>
   </div>
@@ -34,9 +34,9 @@
     </div>
   </div>
   <div class="row mt-2">
-    <div class="col-sm-1">
-      <h3><a href="#" class="btn btn-primary">Draw/New Game</a>
-      <a href="/" class="btn btn-primary">Analyze This Hand</a>
+    <div class="col-md-8">
+      <h3><a href="/game_result/f-f-f-f-f" class="btn btn-primary" id="draw_btn">Draw</a>
+      <a href="/analyze/{{url_hand}}" class="btn btn-primary">Analyze This Hand</a>
       <a href = "#" onClick="onAnalysisToggle()" class="btn btn-primary">Toggle Suggestions</a>
       <a href="/" class="btn btn-primary">Main Menu</a></h3>
     </div>
@@ -66,6 +66,7 @@
 <script>
     analy = true;
     held_cards = [false, false, false, false, false]
+    mapping = []
     function onAnalysisToggle(){
         if (analy == false){
             document.getElementById("analysis_table").style.display = "none";
@@ -75,15 +76,37 @@
             analy = false;
         }    
     }
-    function onCardClick(){
+    function onCardClick(id){
+      index = mapping.indexOf(id);
+      if (held_cards[index]){
+        //True
+        held_cards[index] = false;
+      } else {
+        held_cards[index] = true;
+      }
+      updateGUI()
+    }
+    function updateGUI(){
+      result_string = "/game_result/";
+      for (i = 0; i< held_cards.length; i++){
+        if (held_cards[i] == true){
+          result_string += "t";
+          document.getElementById(mapping[i]).style="border: 3px solid maroon"
+        } else {
+          result_string += "f";
+          document.getElementById(mapping[i]).style="border: 0px solid yellow"
+        }
+        if (i != 4){
+          result_string += "-";
+        }
+        document.getElementById("draw_btn").href = result_string;
+      }
+
 
     }
     function firstLoad(){
-      let childDivs = document.getElementById(card_display).getElementsByTagName('img');
-      for (i=0; i<childDivs.length; i++){
-        childDivs[i].id = String(i);
-      }
+      mapping = String("{{url_hand}}").split('-');
     }
+    firstLoad()
 </script>
-<div onLoad=firstLoad()></div>
 {% endblock %}
