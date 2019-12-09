@@ -145,6 +145,114 @@ def get_straight_flush_prob(held_cards, deck):
             return 0
     else:
         return 0
+    
+def get_four_of_a_kind_prob(held_cards, deck):
+    '''
+    Calculate the probability of getting four of a kind based on the current
+    cards in a hand along with the cards remaining in the deck.
+    '''    
+    if len(held_cards)==5:
+        #if all cards are held, check if the hand is four of a kind, If it is,
+        #return 1, otherwise return 0
+        if score.score_four_of_a_kind(held_cards) and not score.score_four_of_a_kind(held_Cards):
+            return 1
+        else:
+            return 0
+    elif len(held_cards)==0:
+        # if no cards are held, get the probability of a four of a kind from
+        # the remaining deck
+
+        #get the suits that still have a full complement of the same rank
+
+def get_full_house_prob(held_cards, deck):
+    '''
+    Calculate the probability of getting a full house based on the current cards
+    in the hand along with the cards remaining in the deck.
+    '''      
+    if len(held_cards)==5:
+        #if all cards are held, check if the hand is a full house. If
+        #it is, then return 1 otherwise return 0
+        if score.score_full_house(held_cards):
+            return 1
+        else:
+            return 0
+    else:
+        return 0
+
+def get_flush_prob(held_cards, deck):
+    '''
+    Calculate the probability of getting a flush based on the current cards
+    in the hand along with the cards remaining in the deck.
+    '''     
+    if len(held_cards)==5:
+        #if all cards are held, check if the hand is a flush. If it is, then
+        #return 1 otherwise return 0
+        if score.score_flush(held_cards):
+            return 1
+        else:
+            return 0
+    else:
+        return 0
+
+def get_straight_prob(held_cards, deck):
+    '''
+    Calculate the probability of getting a straight based on the current cards
+    in the hand along with the cards remaining in the deck.
+    ''' 
+    if len(held_cards)==5:
+        #if all cards are held, check if the hand is a straight. If it is,
+        #then return 1 otherwise return 0
+        if score.score_straight(held_cards):
+            return 1
+        else:
+            return 0
+    else:
+        return 0
+
+def get_three_of_a_kind_prob(held_cards, deck):
+    '''
+    Calculate the probability of getting a three of a kind based on the current
+    cards in the hand along with the cards remaining in the deck.
+    ''' 
+    if len(held_cards)==5:
+        #if all the cards are held, check if the hand is a three of a kind. If
+        #it is, then return 1 otherwise return 0
+        if score.score_three_of_a_kind(held_cards):
+            return 1
+        else:
+            return 0
+    else:
+        return 0
+
+def get_two_pair_prob(held_cards, deck):
+    '''
+    Calculate the probability of getting a two pair based on the current cards
+    in the hand along with the cards remaining in the deck.
+    ''' 
+    if len(held_cards)==5:
+        #if all the cards are held, check if the hand is a two pair. If it is,
+        #then return 1 otherwise return 0
+        if score.score_two_pair(held_cards):
+            return 1
+        else:
+            return 0
+    else:
+        return 0
+
+def jacks_or_better_prob(held_cards, deck):
+    '''
+    Calculate the probability of getting jacks or better based on the current cards
+    in the hand along with the cards remaining in the deck.
+    ''' 
+    if len(held_cards)==5:
+        #if all the cards are held, check if the hand has jacks or better. If it
+        #is, then return 1 otherwise return 0
+        if score.score_jacks_or_better(held_cards):
+            return 1
+        else:
+            return 0
+    else:
+        return 0    
 
 def get_ev(held_cards, deck):
     payout_dict = {
@@ -153,7 +261,7 @@ def get_ev(held_cards, deck):
         "four_of_a_kind":25,
         "full_house":9,
         "flush":6,
-        "stright":4,
+        "straight":4,
         "three_of_a_kind":3,
         "two_pair":2,
         "jacks_or_better":1,
@@ -162,13 +270,13 @@ def get_ev(held_cards, deck):
     probability_dict = dict()
     probability_dict["royal_flush"] = get_royal_flush_prob(held_cards, deck)
     probability_dict["straight_flush"] = get_straight_flush_prob(held_cards, deck)
-    probability_dict["four_of_a_kind"] = 0
-    probability_dict["full_house"] = 0
-    probability_dict["flush"] = 0
-    probability_dict["stright"] = 0
-    probability_dict["three_of_a_kind"] = 0
-    probability_dict["two_pair"] = 0
-    probability_dict["jacks_or_better"] = 0
+    probability_dict["four_of_a_kind"] = get_four_of_a_kind_prob(held_cards, deck)
+    probability_dict["full_house"] = get_full_house_prob(held_cards, deck)
+    probability_dict["flush"] = get_flush_prob(held_cards, deck)
+    probability_dict["straight"] = get_straight_prob(held_cards, deck)
+    probability_dict["three_of_a_kind"] = get_three_of_a_kind_prob(held_cards, deck)
+    probability_dict["two_pair"] = get_two_pair_prob(held_cards, deck)
+    probability_dict["jacks_or_better"] = get_jacks_or_better_prob(held_cards, deck)
 
     ev = 0
     for key, value in probability_dict.items():
